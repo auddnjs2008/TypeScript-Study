@@ -1,34 +1,34 @@
 {
-  interface Stack {
+  interface Stack<T> {
     readonly size: number; // 값을 내부적으로 결정
-    push(value: string): void;
-    pop(): string;
+    push(value: T): void;
+    pop(): T;
   }
 
-  type StackNode = {
-    readonly value: string;
+  type StackNode<T> = {
+    readonly value: T;
     //next: StackNode | undefined;
-    readonly next?: StackNode;
+    readonly next?: StackNode<T>;
   };
 
-  class StackImpl implements Stack {
+  class StackImpl<T> implements Stack<T> {
     private _size: number = 0; // 언더바를 써주면 내부에서 쓰인다는 의미
-    private head?: StackNode; // 스택노드를 가질수도 있고 가지지 않을수도
+    private head?: StackNode<T>; // 스택노드를 가질수도 있고 가지지 않을수도
     get size() {
       return this._size;
     }
 
     constructor(private capacity: number) {}
 
-    push(value: string) {
+    push(value: T) {
       if (this.size === this.capacity) {
         throw new Error("Stac is Full!");
       }
-      const node: StackNode = { value, next: this.head };
+      const node: StackNode<T> = { value, next: this.head };
       this.head = node;
       this._size++;
     }
-    pop(): string {
+    pop(): T {
       // null 과  undefined는 똑같다
       // null == undefined , null !== undefined
       //  == 동등연산자  === 일치연산자
@@ -43,9 +43,14 @@
       return node.value;
     }
   }
-  const stack = new StackImpl(10);
-  stack.push("Ellie 1");
+  const stack = new StackImpl<string>(10);
+  stack.push("4");
+  stack.push("3");
   stack.push("2");
+
+  const stack2 = new StackImpl<number>(10);
+  stack2.push(1);
+  stack2.push(2);
 
   while (stack.size !== 0) {
     console.log(stack.pop());
